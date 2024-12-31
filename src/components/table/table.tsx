@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import UserDetailModal from '../userModal/userModal';
 
 interface User {
   profileImg: string;
@@ -15,6 +16,14 @@ interface UserTableProps {
 }
 
 const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const handleRowClick = (user: User) => {
+        setSelectedUser(user); // Set the selected user to open the modal
+      };
+    
+      const handleCloseModal = () => {
+        setSelectedUser(null); // Close the modal by resetting the selected user
+      };
   return (
     <table className="w-full bg-white border-collapse border border-gray-300">
       <thead className="bg-gray-200">
@@ -30,7 +39,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
       </thead>
       <tbody>
         {users.map((user, index) => (
-          <tr key={index} className="hover:bg-gray-100">
+          <tr key={index} className="hover:bg-gray-100" onClick={() => handleRowClick(user)}>
             <td className="border border-gray-300 px-4 py-2 text-center">
               <img
                 src={user.profileImg}
@@ -54,6 +63,9 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
           </tr>
         ))}
       </tbody>
+      {selectedUser && (
+        <UserDetailModal user={selectedUser} onClose={handleCloseModal} />
+      )}
     </table>
   );
 };

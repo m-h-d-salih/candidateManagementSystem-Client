@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SearchBar from '../searchBar/searchBar';
 import UserTable from '../table/table';
 import Pagination from '../pagination/pagination';
-
+import CreateCandidate from '../create/createCanidate';
 
 const Dashboard: React.FC = () => {
   const [users, setUsers] = useState([
@@ -43,6 +43,7 @@ const Dashboard: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 2;
 
   const filteredUsers = users.filter(
@@ -63,17 +64,43 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-    <div className="p-10">
-    <div className='flex justify-center mt-2'><h1 className='text-3xl text-black'>Dashboard</h1></div>
-      <SearchBar searchQuery={searchQuery} onSearch={setSearchQuery} />
-      <UserTable users={paginatedUsers} onDelete={handleDelete} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={Math.ceil(filteredUsers.length / itemsPerPage)}
-        onPageChange={setCurrentPage}
+      <div className="p-10">
+        {/* Centered Title */}
+        <div className="flex justify-center mb-6">
+          <h1 className="text-3xl text-black">Dashboard</h1>
+        </div>
+
+        {/* Row for Search Bar and Button */}
+        <div className="flex justify-between items-center mb-6">
+          <SearchBar searchQuery={searchQuery} onSearch={setSearchQuery} />
+          <button
+            onClick={() => setIsModalOpen(true)} // Open the modal
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            +
+          </button>
+        </div>
+
+        <UserTable users={paginatedUsers} onDelete={handleDelete} />
+        
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredUsers.length / itemsPerPage)}
+          onPageChange={setCurrentPage}
         />
-    </div>
-        </>
+
+        {/* Modal for creating new candidate */}
+        {isModalOpen && (
+          <CreateCandidate
+            onClose={() => setIsModalOpen(false)} // Close the modal
+            onSubmit={(newUser) => {
+              setUsers([...users, newUser]); // Add the new user to the list
+              setIsModalOpen(false);
+            }}
+          />
+        )}
+      </div>
+    </>
   );
 };
 
