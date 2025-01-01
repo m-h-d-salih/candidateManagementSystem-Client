@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UserDetailModal from '../userModal/userModal';
-
+import TableSkeleton from '../skeleton/tableSkeleton';
+import bgImg from '../../assets/profile.jpg'
 interface User {
   profileUrl: string;
   name: string;
@@ -13,9 +14,10 @@ interface User {
 interface UserTableProps {
   users: User[];
   onDelete: (email: string) => void;
+  isLoading:any
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
+const UserTable: React.FC<UserTableProps> = ({ users, onDelete,isLoading }) => {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const handleRowClick = (user: User) => {
         setSelectedUser(user); // Set the selected user to open the modal
@@ -24,6 +26,8 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
       const handleCloseModal = () => {
         setSelectedUser(null); // Close the modal by resetting the selected user
       };
+      if(isLoading)
+        return <TableSkeleton/>
   return (
     <table className="w-full bg-white border-collapse border border-gray-300">
       <thead className="bg-gray-200">
@@ -42,7 +46,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
           <tr key={index} className="hover:bg-gray-100" onClick={() => handleRowClick(user)}>
             <td className="border border-gray-300 px-4 py-2 text-center">
               <img
-                src={user.profileUrl}
+                src={user.profileUrl?user.profileUrl:bgImg}
                 alt={user.name}
                 className="w-10 h-10 rounded-full mx-auto"
               />

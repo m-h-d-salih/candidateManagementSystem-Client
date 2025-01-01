@@ -73,7 +73,7 @@ useEffect(() => {
           </button>
         </div>
 
-        <UserTable users={candidates} onDelete={()=>console.log(`hi`)}  />
+        <UserTable users={candidates} onDelete={()=>console.log(`hi`)} isLoading={isLoading} />
         
         <Pagination
           currentPage={currentPage}

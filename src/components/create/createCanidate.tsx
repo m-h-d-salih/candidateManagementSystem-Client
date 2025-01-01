@@ -1,16 +1,43 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useMutation } from '@tanstack/react-query';
+import api from '../../axios/axios';
+import { AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 interface CreateCandidateProps {
   onClose: () => void;
   onSubmit: (newUser: any) => void;
 }
+interface Candidate{
+  name: string;
+    address: string;
+    phone: string;
+    email: string;
+    password: string;
+}
 
 const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose, onSubmit }) => {
+  const createACandidate = async (body: Candidate): Promise<any> => {
+    const response: AxiosResponse<any> = await api.post(`/admin/candidate`, body);
+    return response.data;
+  };
+  const mutation = useMutation( {mutationFn:createACandidate,
+    onSuccess: (data: any) => {
+      // console.log(data)
+      // alert("Successfully Created Candidate");
+      // onSubmit(data);
+      toast.success("Successfully Created Candidate");
+    },
+    onError: (error: any) => {
+      const {message}=error.response.data;
+      toast.error(message);
+      // console.error( message);
+    },
+  });
   const formik = useFormik({
     initialValues: {
-      profileImg: 'https://via.placeholder.com/50',
       name: '',
       address: '',
       phone: '',
@@ -29,8 +56,10 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose, onSubmit }) 
         .required('Password is required'),
     }),
     onSubmit: (values) => {
-      onSubmit(values);
-      formik.resetForm();
+      // onSubmit(values);
+      // console.log(values)
+      // formik.resetForm();
+      mutation.mutate(values)
     },
   });
 
