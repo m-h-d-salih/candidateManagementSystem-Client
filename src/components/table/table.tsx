@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import UserDetailModal from '../userModal/userModal';
 
 interface User {
-  profileImg: string;
+  profileUrl: string;
   name: string;
   address: string;
   phone: string;
@@ -42,7 +42,7 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete }) => {
           <tr key={index} className="hover:bg-gray-100" onClick={() => handleRowClick(user)}>
             <td className="border border-gray-300 px-4 py-2 text-center">
               <img
-                src={user.profileImg}
+                src={user.profileUrl}
                 alt={user.name}
                 className="w-10 h-10 rounded-full mx-auto"
               />

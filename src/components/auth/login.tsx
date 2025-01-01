@@ -5,6 +5,7 @@ import bgimg from '../../assets/loginimage.jpg';
 import { useMutation } from "@tanstack/react-query";
 import api from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginPage: React.FC = () => {
   const validationSchema = Yup.object({
@@ -24,22 +25,24 @@ const LoginPage: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit:async (values) => {
-      console.log("Form values", values);
       try {
         const res=await api.post('/admin/login',values);
+        
         if(res.data?.success){
-          console.log(res.data)
           const {data,token}=res?.data;
           localStorage.setItem('userId',data._id)
           localStorage.setItem('token',token)
-          alert('welcome admin')
-          navigate('/dashboard')
-        }else{
-          alert('/invalid credentials')
-        }
+          toast.success("welcome admin");
+          setTimeout(()=>{
 
-      } catch (error) {
-        console.log(error)
+            navigate('/dashboard')
+          },3000)
+        }
+      
+
+      } catch (error:any) {
+        console.log(error?.response)
+        toast.error(`inncorrect username/password`)
       }
 
     },

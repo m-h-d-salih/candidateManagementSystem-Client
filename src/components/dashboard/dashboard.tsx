@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from '../searchBar/searchBar';
 import UserTable from '../table/table';
 import Pagination from '../pagination/pagination';
@@ -6,76 +6,54 @@ import CreateCandidate from '../create/createCanidate';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../axios/axios';
+import { useNavigate } from 'react-router-dom';
 
 const fetchCandidates = async () => {
-    const {data} = await api.get('/admin/candidates'); // Make your API call here
-    return data || [];
-  };
+  const {data} = await api.get('/admin/candidates');
+  const {candidates,totalCandidates}=data?.data;
+  return {candidates,totalCandidates}  ;
+};
 const Dashboard: React.FC = () => {
-    const [candidates, setCandidates] = useState([])
-  const [users, setUsers] = useState([
-    {
-      profileImg: 'https://via.placeholder.com/50',
-      name: 'John Doe',
-      address: '123 Main St',
-      phone: '123-456-7890',
-      email: 'john@example.com',
-      password: 'password123',
-    },
-    {
-      profileImg: 'https://via.placeholder.com/50',
-      name: 'John Doe',
-      address: '123 Main St',
-      phone: '123-456-7890',
-      email: 'john@example.com',
-      password: 'password123',
-    },
-    {
-      profileImg: 'https://via.placeholder.com/50',
-      name: 'John ',
-      address: '123 Main St',
-      phone: '123-456-7890',
-      email: 'john@example.com',
-      password: 'password123',
-    },
-    {
-      profileImg: 'https://via.placeholder.com/50',
-      name: ' Doe',
-      address: '123 Main St',
-      phone: '123-456-7890',
-      email: 'john@example.com',
-      password: 'password123',
-    },
-    // Add more dummy users here...
-  ]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [candidates, setCandidates] = useState([])
+    const navigate=useNavigate()
+  const [candidates, setCandidates] = useState([]);
   
-  const { data } = useQuery({
+  const { data,isLoading } = useQuery({
     //    ^? const data: number | undefined
     queryKey: ['candidates'],
     queryFn: fetchCandidates,
   })
-  console.log(data);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+//  const {candidates,totalCandidates}=data;
+// console.log(data)
+useEffect(() => {
+  if (data?.candidates) {
+    setCandidates(data.candidates);
+  }
+}, [data]);
   const itemsPerPage = 2;
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.address.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredUsers = candidates.filter(
+  //   (user) =>
+  //     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //     user.address.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // const paginatedUsers = filteredUsers.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage
+  // );
 
-  const handleDelete = (email: string) => {
-    setUsers(users.filter((user) => user.email !== email));
-  };
-
+  // const handleDelete = (email: string) => {
+  //   setCandidates(candidates.filter((user) => user.email !== email));
+  // };
+  const handleLogout=()=>{
+    localStorage.clear();
+    navigate('/')
+  }
   return (
     <>
       <div className="p-10">
@@ -95,11 +73,11 @@ const Dashboard: React.FC = () => {
           </button>
         </div>
 
-        <UserTable users={paginatedUsers} onDelete={handleDelete} />
+        <UserTable users={candidates} onDelete={()=>console.log(`hi`)}  />
         
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredUsers.length / itemsPerPage)}
+          totalPages={Math.ceil(candidates.length / itemsPerPage)}
           onPageChange={setCurrentPage}
         />
 
@@ -108,11 +86,12 @@ const Dashboard: React.FC = () => {
           <CreateCandidate
             onClose={() => setIsModalOpen(false)} // Close the modal
             onSubmit={(newUser) => {
-              setUsers([...users, newUser]); // Add the new user to the list
+              // setCandidates([...candidates, newUser]); // Add the new user to the list
               setIsModalOpen(false);
             }}
           />
         )}
+      <button className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600' onClick={handleLogout}>Logout</button>
       </div>
     </>
   );

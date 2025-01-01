@@ -3,7 +3,7 @@ import React from 'react';
 
 interface UserDetailModalProps {
   user: {
-    profileImg: string;
+    profileUrl: string;
     name: string;
     address: string;
     phone: string;
@@ -19,7 +19,7 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({ user, onClose }) => {
       <div className="bg-white p-6 rounded-lg w-1/3">
         <h2 className="text-xl font-semibold mb-4">User Details</h2>
         <div className="flex mb-4 justify-evenly">
-          <img src={user.profileImg} alt={user.name} className="w-16 h-16 rounded-full mr-4" />
+          <img src={user.profileUrl} alt={user.name} className="w-16 h-16 rounded-full mr-4" />
           <div>
             <h3 className="font-semibold ">{user.name}</h3>
             <p>{user.email}</p>
