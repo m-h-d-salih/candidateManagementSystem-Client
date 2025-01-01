@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../axios/axios';
 import { useNavigate } from 'react-router-dom';
+import LoginCandidatePage from '../auth/loginCandidate';
 
 const fetchCandidates = async () => {
   const {data} = await api.get('/admin/candidates');
@@ -17,6 +18,7 @@ const Dashboard: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     // const [candidates, setCandidates] = useState([])
     const navigate=useNavigate()
   const [candidates, setCandidates] = useState([]);
@@ -33,6 +35,12 @@ useEffect(() => {
     setCandidates(data.candidates);
   }
 }, [data]);
+useEffect(() => {
+  const admin = localStorage.getItem('adminId');
+  if (admin) {
+    setIsAuthenticated(true); 
+  }
+}, []);
   const itemsPerPage = 2;
 
   // const filteredUsers = candidates.filter(
@@ -53,6 +61,9 @@ useEffect(() => {
   const handleLogout=()=>{
     localStorage.clear();
     navigate('/')
+  }
+  if (!isAuthenticated) {
+    return <LoginCandidatePage />; // If not authenticated, show the LoginCandidatePage
   }
   return (
     <>

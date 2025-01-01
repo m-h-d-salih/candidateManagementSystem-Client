@@ -3,6 +3,7 @@ import LoginPage from "./components/auth/login";
 import LoginCandidatePage from "./components/auth/loginCandidate";
 import Dashboard from "./components/dashboard/dashboard";
 import { ToastContainer, toast } from 'react-toastify';
+import Home from "./components/pages/home";
 const App: React.FC = () => {
   return (
     <>
@@ -10,8 +11,9 @@ const App: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/loginAdmin" element={<LoginPage />} />
-        <Route path="/" element={<LoginCandidatePage />} />
+        <Route path="/login" element={<LoginCandidatePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </Router>
     </>

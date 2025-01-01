@@ -1,11 +1,14 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bgimg from "../../assets/loginimage.jpg"; // Ensure the correct path to the image
+import api from "../../axios/axios";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const LoginCandidatePage: React.FC = () => {
-  // Define validation schema using Yup
+  const navigate=useNavigate()
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
@@ -14,8 +17,24 @@ const LoginCandidatePage: React.FC = () => {
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
-
-  // Initialize Formik
+const login=async(body:any)=>{
+  return api.post('/candidate/login',body)
+}
+const mutation=useMutation({mutationFn:login,
+  onSuccess: (data: any) => {
+       const{data:user}=data?.data;
+       localStorage.setItem('userId',user._id)
+       localStorage.setItem('token',data.data.token)
+       toast.success("login successfully");
+       setTimeout(() => {
+        navigate(`/`)
+       }, 3000);
+     },
+     onError: (error: any) => {
+       const {message}=error.response.data;
+       toast.error(message);
+       // console.error( message);
+     },})
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -23,7 +42,8 @@ const LoginCandidatePage: React.FC = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("Form values", values);
+      // console.log("Form values", values);
+      mutation.mutate(values)
     },
   });
 

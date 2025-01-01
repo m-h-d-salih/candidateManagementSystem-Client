@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
         
         if(res.data?.success){
           const {data,token}=res?.data;
-          localStorage.setItem('userId',data._id)
+          localStorage.setItem('adminId',data._id)
           localStorage.setItem('token',token)
           toast.success("welcome admin");
           setTimeout(()=>{
