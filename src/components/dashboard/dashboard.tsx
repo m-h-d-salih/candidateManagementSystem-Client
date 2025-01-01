@@ -3,8 +3,16 @@ import SearchBar from '../searchBar/searchBar';
 import UserTable from '../table/table';
 import Pagination from '../pagination/pagination';
 import CreateCandidate from '../create/createCanidate';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import api from '../../axios/axios';
 
+const fetchCandidates = async () => {
+    const {data} = await api.get('/admin/candidates'); // Make your API call here
+    return data || [];
+  };
 const Dashboard: React.FC = () => {
+    const [candidates, setCandidates] = useState([])
   const [users, setUsers] = useState([
     {
       profileImg: 'https://via.placeholder.com/50',
@@ -40,7 +48,13 @@ const Dashboard: React.FC = () => {
     },
     // Add more dummy users here...
   ]);
-
+  
+  const { data } = useQuery({
+    //    ^? const data: number | undefined
+    queryKey: ['candidates'],
+    queryFn: fetchCandidates,
+  })
+  console.log(data);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -2,9 +2,11 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import bgimg from '../../assets/loginimage.jpg';
+import { useMutation } from "@tanstack/react-query";
+import api from "../../axios/axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
-  // Define validation schema using Yup
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
@@ -13,18 +15,37 @@ const LoginPage: React.FC = () => {
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
-
-  // Initialize Formik
+  const navigate=useNavigate()
+ 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit:async (values) => {
       console.log("Form values", values);
+      try {
+        const res=await api.post('/admin/login',values);
+        if(res.data?.success){
+          console.log(res.data)
+          const {data,token}=res?.data;
+          localStorage.setItem('userId',data._id)
+          localStorage.setItem('token',token)
+          alert('welcome admin')
+          navigate('/dashboard')
+        }else{
+          alert('/invalid credentials')
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+
     },
   });
+  
+
 
   return (
     <div
