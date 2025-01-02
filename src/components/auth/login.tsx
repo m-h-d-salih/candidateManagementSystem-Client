@@ -2,7 +2,6 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import bgimg from '../../assets/loginimage.jpg';
-import { useMutation } from "@tanstack/react-query";
 import api from "../../axios/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -36,7 +35,7 @@ const LoginPage: React.FC = () => {
           setTimeout(()=>{
 
             navigate('/dashboard')
-          },3000)
+          },1000)
         }
       
 

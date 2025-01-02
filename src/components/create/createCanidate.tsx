@@ -31,7 +31,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
     onError: (error: any) => {
       const {message}=error.response.data;
       toast.error(message);
-      // console.error( message);
     },
   });
   const formik = useFormik({
@@ -54,9 +53,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
         .required('Password is required'),
     }),
     onSubmit: (values) => {
-      // onSubmit(values);
-      // console.log(values)
-      // formik.resetForm();
       mutation.mutate(values)
     },
   });
@@ -64,7 +60,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-96">
-        {/* Modal Header */}
         <div className="flex justify-between items-center bg-gray-100 px-4 py-3 border-b">
           <h2 className="text-lg font-bold">Create Candidate</h2>
           <button
@@ -75,10 +70,8 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
           </button>
         </div>
 
-        {/* Modal Content */}
         <div className="p-4">
           <form onSubmit={formik.handleSubmit}>
-            {/* Name Field */}
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium">
                 Name
@@ -97,7 +90,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
               )}
             </div>
 
-            {/* Address Field */}
             <div className="mb-4">
               <label htmlFor="address" className="block text-sm font-medium">
                 Address
@@ -116,7 +108,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
               )}
             </div>
 
-            {/* Phone Field */}
             <div className="mb-4">
               <label htmlFor="phone" className="block text-sm font-medium">
                 Phone
@@ -135,7 +126,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
               )}
             </div>
 
-            {/* Email Field */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium">
                 Email
@@ -154,7 +144,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
               )}
             </div>
 
-            {/* Password Field */}
             <div className="mb-4">
               <label htmlFor="password" className="block text-sm font-medium">
                 Password
@@ -173,7 +162,6 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
               )}
             </div>
 
-            {/* Submit Button */}
             <div className="flex justify-end">
               <button
                 type="submit"

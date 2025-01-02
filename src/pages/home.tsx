@@ -11,15 +11,7 @@ import { toast } from 'react-toastify';
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
-  const [profile, setProfile] = useState<boolean>(false);
-  const [resume, setresume] = useState<boolean>(false);
-  const [userDetails, setUserDetails] = useState<any>({
-    name: '',
-    email: '',
-    phone: '',
-    photo: '',
-    resume: ''
-  });
+
   const fetchCandidate = async () => {
     const {data} = await api.get(`/candidate/${userId}`);
     return data ?.data ;
@@ -85,24 +77,13 @@ const Home = () => {
     queryKey: ['candidate'],
     queryFn: fetchCandidate,
   })
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files[0]) {
-      setUserDetails({
-        ...userDetails,
-        [name]: URL.createObjectURL(files[0]) // For image preview
-      });
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // console.log('User details saved');
   };
     const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    setProfile(true)
     if (files && files[0]) {
       handleProfileUpload(files[0]);
     }
@@ -126,7 +107,6 @@ const Home = () => {
 
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
         <div className="flex flex-col items-center">
-          {/* Profile Image */}
           <div className="mb-4">
             {candidate.profileUrl ? (
               <img src={candidate.profileUrl} alt="Profile" className="w-32 h-32 rounded-full object-cover" />
@@ -137,7 +117,6 @@ const Home = () => {
             )}
           </div>
 
-          {/* Name */}
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold text-gray-600">Name</label>
             <input
@@ -148,7 +127,6 @@ const Home = () => {
             />
           </div>
 
-          {/* Email */}
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold text-gray-600">Email</label>
             <input
@@ -159,7 +137,6 @@ const Home = () => {
             />
           </div>
 
-          {/* Phone */}
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold text-gray-600">Phone</label>
             <input
@@ -170,7 +147,6 @@ const Home = () => {
             />
           </div>
 
-          {/* Password */}
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold text-gray-600">Password</label>
             <input
@@ -181,7 +157,6 @@ const Home = () => {
             />
           </div>
 
-          {/* View Resume */}
           {candidate.resume && (
             <div className="mb-4">
               <a
@@ -195,7 +170,6 @@ const Home = () => {
             </div>
           )}
 
-          {/* Upload Photo */}
           <div className="mb-4 w-full">
             <label htmlFor="photo" className="block text-sm font-semibold text-gray-600">Upload Profile Picture</label>
             <input
@@ -207,7 +181,6 @@ const Home = () => {
             />
           </div>
 
-          {/* Upload Resume */}
           <div className="mb-6 w-full">
             <label htmlFor="resume" className="block text-sm font-semibold text-gray-600">Upload Resume</label>
             <input
@@ -219,7 +192,6 @@ const Home = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             onClick={handleSubmit}
             className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500"
@@ -229,7 +201,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Logout Button */}
       <div className="mt-6">
         <button
           onClick={handleLogout}
