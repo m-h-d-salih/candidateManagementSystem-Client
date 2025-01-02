@@ -16,6 +16,7 @@ const Home = () => {
     const {data} = await api.get(`/candidate/${userId}`);
     return data ?.data ;
   };
+ 
   useEffect(() => {
     const user = localStorage.getItem('userId');
     if (user) {
@@ -23,7 +24,6 @@ const Home = () => {
       setUserId(user)
     }
   }, []);
-
   const navigate = useNavigate();
   const uploadProfilePicture = async (file: any) => {
     const formData = new FormData();

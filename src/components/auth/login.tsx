@@ -62,7 +62,6 @@ const LoginPage: React.FC = () => {
         </h2>
 
         <form onSubmit={formik.handleSubmit}>
-          {/* Email Input */}
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-gray-600"
@@ -85,7 +84,6 @@ const LoginPage: React.FC = () => {
             )}
           </div>
 
-          {/* Password Input */}
           <div className="mb-6">
             <label
               className="block text-sm font-medium text-gray-600"
@@ -108,7 +106,6 @@ const LoginPage: React.FC = () => {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
