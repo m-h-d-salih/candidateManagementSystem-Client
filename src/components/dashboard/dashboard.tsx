@@ -3,7 +3,6 @@ import SearchBar from '../searchBar/searchBar';
 import UserTable from '../table/table';
 import Pagination from '../pagination/pagination';
 import CreateCandidate from '../create/createCanidate';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../axios/axios';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +23,6 @@ const Dashboard: React.FC = () => {
   const [candidates, setCandidates] = useState([]);
   
   const { data,isLoading } = useQuery({
-    //    ^? const data: number | undefined
     queryKey: ['candidates'],
     queryFn: fetchCandidates,
   })

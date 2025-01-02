@@ -18,16 +18,13 @@ interface Candidate{
     password: string;
 }
 
-const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose, onSubmit }) => {
+const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose,  }) => {
   const createACandidate = async (body: Candidate): Promise<any> => {
     const response: AxiosResponse<any> = await api.post(`/admin/candidate`, body);
     return response.data;
   };
   const mutation = useMutation( {mutationFn:createACandidate,
-    onSuccess: (data: any) => {
-      // console.log(data)
-      // alert("Successfully Created Candidate");
-      // onSubmit(data);
+    onSuccess: () => {
       toast.success("Successfully Created Candidate");
     },
     onError: (error: any) => {
