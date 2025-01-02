@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/auth/login";
 import LoginCandidatePage from "./components/auth/loginCandidate";
 import Dashboard from "./components/dashboard/dashboard";
-import { ToastContainer, toast } from 'react-toastify';
-import Home from "./components/pages/home";
+import { ToastContainer } from 'react-toastify';
+import Home from "./pages/home";
 const App: React.FC = () => {
   return (
     <>

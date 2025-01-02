@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoginCandidatePage from '../auth/loginCandidate';
-import api from '../../axios/axios';
+import LoginCandidatePage from '../components/auth/loginCandidate';
+import api from '../axios/axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import ProfileSkeleton from '../skeleton/formSkeleton';
+import ProfileSkeleton from '../components/skeleton/formSkeleton';
 import { toast } from 'react-toastify';
 
 

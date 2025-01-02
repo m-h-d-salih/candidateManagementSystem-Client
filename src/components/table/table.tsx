@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import UserDetailModal from '../userModal/userModal';
+import UserDetailModal from '../modals/userModal';
 import TableSkeleton from '../skeleton/tableSkeleton';
 import bgImg from '../../assets/profile.jpg'
+import api from '../../axios/axios';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 interface User {
   profileUrl: string;
   name: string;
@@ -9,23 +12,44 @@ interface User {
   phone: string;
   email: string;
   password: string;
+  _id:string
 }
 
 interface UserTableProps {
   users: User[];
-  onDelete: (email: string) => void;
+  // onDelete: (email: string) => void;
   isLoading:any
+  refetch:any
 }
 
-const UserTable: React.FC<UserTableProps> = ({ users, onDelete,isLoading }) => {
+
+const UserTable: React.FC<UserTableProps> = ({ users,isLoading,refetch }) => {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const handleRowClick = (user: User) => {
-        setSelectedUser(user); // Set the selected user to open the modal
+        setSelectedUser(user);
       };
     
       const handleCloseModal = () => {
-        setSelectedUser(null); // Close the modal by resetting the selected user
+        setSelectedUser(null); 
       };
+      const deleteCandidate = async (userId: string) => {
+        const { data } = await api.put(`/admin/candidate/${userId}`);
+        return data;
+      };
+      
+        const { mutate:onDelete, isPending } = useMutation( {
+        mutationFn:deleteCandidate,
+        onSuccess: () => {
+          toast.success('candidate deleted successfully')
+          refetch(); 
+          
+        },
+        onError: (error:any) => {
+          console.error('Error deleting candidate:', error);
+          toast.error(`Error deleting candidate`)
+        },
+      });
+     
       if(isLoading)
         return <TableSkeleton/>
   return (
@@ -58,10 +82,10 @@ const UserTable: React.FC<UserTableProps> = ({ users, onDelete,isLoading }) => {
             <td className="border border-gray-300 px-4 py-2">{user.password}</td>
             <td className="border border-gray-300 px-4 py-2 text-center">
               <button
-                onClick={() => onDelete(user.email)}
+                onClick={() => onDelete(user._id)}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
-                Delete
+                {isPending?'Deleting...':'Delete'}
               </button>
             </td>
           </tr>
