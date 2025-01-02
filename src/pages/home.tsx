@@ -192,11 +192,11 @@ const Home = () => {
             />
           </div>
 
-          <button
+          <button style={{display:isUploading || isPending?'block':'none'}}
             onClick={handleSubmit}
             className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500"
           >
-            {isUploading || isPending?'uploading':'Save Changes'}
+            {isUploading || isPending?'uploading':''}
           </button>
         </div>
       </div>
