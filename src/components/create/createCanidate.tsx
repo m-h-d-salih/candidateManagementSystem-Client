@@ -33,7 +33,7 @@ const CreateCandidate: React.FC<CreateCandidateProps> = ({ onClose  }) => {
       toast.error(message);
     },
   });
-  const formik = useFormik({
+  const formik = useFormik({  
     initialValues: {
       name: '',
       address: '',

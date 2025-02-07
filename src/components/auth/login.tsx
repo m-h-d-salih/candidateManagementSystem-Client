@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import bgimg from '../../assets/loginimage.jpg';
 import api from "../../axios/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const LoginPage: React.FC = () => {
@@ -112,7 +112,16 @@ const LoginPage: React.FC = () => {
           >
             Login
           </button>
+          
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-500">
+            Back to{" "}
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Candidate?
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ const Home = () => {
  
   useEffect(() => {
     const user = localStorage.getItem('userId');
-    if (user) {
+    if (user) { 
       setIsAuthenticated(true); 
       setUserId(user)
     }
